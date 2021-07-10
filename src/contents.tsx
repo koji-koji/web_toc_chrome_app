@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { css, cx } from '@emotion/css'
 
 import './contents.css';
 
@@ -13,7 +14,9 @@ const Main = () => {
           const rect = headingNode.getBoundingClientRect();
           const elemtop = rect.top + window.pageYOffset;
           document.documentElement.scrollTop = elemtop;
-        }}>
+        }} className={css`
+          display: block;
+        `}>
           {headingNode.textContent}
         </a>
       </>
