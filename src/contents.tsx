@@ -5,11 +5,18 @@ import './contents.css';
 
 const Main = () => {
   const headingNodes = document.querySelectorAll("h1, h2, h3, h4, h5, h6")
-  Array.prototype.map.call(headingNodes, (headingNode: Node) => headingNode)
-
+  
   return <div>
-    {Array.prototype.map.call(headingNodes, (headingNode: Node) => {
-      return headingNode.textContent
+    {Array.prototype.map.call(headingNodes, (headingNode: HTMLElement) => {
+      return <>
+        <a onClick={() => {
+          const rect = headingNode.getBoundingClientRect();
+          const elemtop = rect.top + window.pageYOffset;
+          document.documentElement.scrollTop = elemtop;
+        }}>
+          {headingNode.textContent}
+        </a>
+      </>
     })}
   </div>;  
 };
