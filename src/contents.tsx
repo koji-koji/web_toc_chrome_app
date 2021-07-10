@@ -6,6 +6,26 @@ import './contents.css';
 
 const Main = () => {
   const headingNodes = document.querySelectorAll("h1, h2, h3, h4, h5, h6")
+
+  const addLeftPaddingBySelector = (selector: HTMLElement) => {
+    return getPaddingNumberBySelector(selector) * 15
+  }
+
+  const getPaddingNumberBySelector = (selector: HTMLElement) => {
+    if (["h1", "h2", "h3", "h4", "h5", "h6", "H1", "H2", "H3", "H4", "H5", "H6",].includes(selector.tagName)) {
+      const headingNumber = +selector.tagName.slice(-1);
+      console.log(headingNumber)
+      return headingNumber
+    }
+    return 7
+  }
+
+  const addTopPaddingBySelector = (selector: HTMLElement) => {
+    if (["h1", "h2", "H1", "H2"].includes(selector.tagName)) {
+      const headingNumber = +selector.tagName.slice(-1);
+      return headingNumber * 5
+    }
+  }
   
   return <div>
     {Array.prototype.map.call(headingNodes, (headingNode: HTMLElement) => {
@@ -16,6 +36,8 @@ const Main = () => {
           document.documentElement.scrollTop = elemtop;
         }} className={css`
           display: block;
+          padding-left: ${addLeftPaddingBySelector(headingNode)}px;
+          padding-top: ${addTopPaddingBySelector(headingNode)}px;
         `}>
           {headingNode.textContent}
         </a>
