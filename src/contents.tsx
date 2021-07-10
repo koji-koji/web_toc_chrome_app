@@ -27,7 +27,7 @@ const Main = () => {
     }
   }
   
-  return <div>
+  return <>
     {Array.prototype.map.call(headingNodes, (headingNode: HTMLElement) => {
       return <>
         <a onClick={() => {
@@ -38,12 +38,21 @@ const Main = () => {
           display: block;
           padding-left: ${addLeftPaddingBySelector(headingNode)}px;
           padding-top: ${addTopPaddingBySelector(headingNode)}px;
+          overflow: auto;
+          resize:   both;
+          white-space: nowrap;
         `}>
-          {headingNode.textContent}
+          <p className={css`
+            overflow: auto;
+            resize:   both;
+            white-space: nowrap;
+          `}>
+            {headingNode.textContent}
+          </p>
         </a>
       </>
     })}
-  </div>;  
+  </>;  
 };
 
 const app = document.createElement('div');
