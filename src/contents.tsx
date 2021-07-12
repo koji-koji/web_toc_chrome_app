@@ -7,7 +7,7 @@ import './contents.css';
 const Main = () => {
   // TODO: ロジックをサイドメニューのコンポーネントから分離。
   // リンク先でもh1~h6を取得するので、複数回or再起的に使えるようにする。
-  const headingNodes = document.querySelectorAll("h1, h2, h3, h4, h5, h6")
+  const headingNodes = document.querySelectorAll("h1, h2, h3, h4, h5, h6, a")
 
   const addLeftPaddingBySelector = (selector: HTMLElement) => {
     return getPaddingNumberBySelector(selector) * 15
@@ -16,7 +16,6 @@ const Main = () => {
   const getPaddingNumberBySelector = (selector: HTMLElement) => {
     if (["h1", "h2", "h3", "h4", "h5", "h6", "H1", "H2", "H3", "H4", "H5", "H6",].includes(selector.tagName)) {
       const headingNumber = +selector.tagName.slice(-1);
-      console.log(headingNumber)
       return headingNumber
     }
     return 7
@@ -32,13 +31,30 @@ const Main = () => {
   return <>
     {Array.prototype.map.call(headingNodes, (headingNode: HTMLElement) => {
       return <>
-        <a onClick={() => {
-          const rect = headingNode.getBoundingClientRect();
-          const elementTop = rect.top + window.pageYOffset;
-          // TODO: 暫定コードの削除。スクロール時にheaderがあることを考慮して固定値を入れている。
-          // headerがあるかを判断して、動的にマージンを設定するように調整したい。
-          const headerMargin = 100
-          document.documentElement.scrollTop = elementTop - headerMargin;
+        {console.log(headingNode.tagName)}
+        <a onClick={async () => {
+          if (headingNode.tagName === "A") {
+            const linkElement = headingNode as HTMLLinkElement
+            // const response = await fetch(linkElement.href)
+            // const data = await response
+            // console.log(data)
+            fetch(linkElement.href)
+              .then(response => response.text())
+              .then(data => {
+                console.log('aaaaa')
+                // console.log(data)
+                let parser = new DOMParser();
+                let doc = parser.parseFromString(data, 'text/html')
+                console.log(doc.querySelectorAll("h1, h2, h3, h4, h5, h6"))
+              });
+          } else {
+            const rect = headingNode.getBoundingClientRect();
+            const elementTop = rect.top + window.pageYOffset;
+            // TODO: 暫定コードの削除。スクロール時にheaderがあることを考慮して固定値を入れている。
+            // headerがあるかを判断して、動的にマージンを設定するように調整したい。
+            const headerMargin = 100
+            document.documentElement.scrollTop = elementTop - headerMargin;
+          }
         }} className={css`
           display: block;
           padding-left: ${addLeftPaddingBySelector(headingNode)}px;
@@ -73,9 +89,11 @@ app.style.overflow = "scroll"
 // 拡張機能をサイドに表示
 const body = document.getElementsByTagName("body")?.[0] as HTMLElement ;
 const bodyCopy = body.cloneNode(true) as HTMLElement
-const addBody = "<div>" + bodyCopy.innerHTML + "</div>" 
+const previousBody = "<div>" + bodyCopy.innerHTML + "</div>" 
+// previousBody.className = body.className
 
-body.innerHTML = addBody;
+
+body.innerHTML = previousBody;
 body.style.display = "flex"
 body.prepend(app);
 
