@@ -1,10 +1,10 @@
-const webpack = require('webpack');
-const HtmlWebPackPlugin = require('html-webpack-plugin');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const CopyPlugin = require('copy-webpack-plugin');
+const webpack = require('webpack')
+const HtmlWebPackPlugin = require('html-webpack-plugin')
+const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+const CopyPlugin = require('copy-webpack-plugin')
 
 module.exports = {
-    entry: {
+  entry: {
     app: './src/index.tsx',
     background: './src/background.ts',
     contents: './src/contents.tsx',
@@ -23,7 +23,7 @@ module.exports = {
         use: [
           {
             loader: 'html-loader',
-            options: {minimize: true},
+            options: { minimize: true },
           },
         ],
       },
@@ -44,6 +44,8 @@ module.exports = {
       filename: '[name].css',
       chunkFilename: '[id].css',
     }),
-    new CopyPlugin({patterns: [{from: './public/manifest.json', to: 'manifest.json'}]}),
+    new CopyPlugin({
+      patterns: [{ from: './public/manifest.json', to: 'manifest.json' }],
+    }),
   ],
-};
+}
